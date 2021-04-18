@@ -9,7 +9,7 @@ class Calculadora{
     }
 
 
-    
+
     // INICIADOR DE LA CALCULADORA 
     init(){
         this.addEvents(this.keys);
@@ -153,5 +153,92 @@ class Calculadora{
         this.toAdd = "";
         this.display.innerHTML = "";
         this.toDisplay = "";
+    }
+
+
+
+    cambiarSigno(n){
+
+        if(n == ""){
+            return "";
+        }
+
+        console.log("To Change: " + n);
+
+        var operation = n;
+        var numeros = operation.replace(/[\+\/\*]/g, "").split("");
+
+        if(numeros[0] == "-"){
+            for(var i = 0; i < numeros.length; i++){
+                if(numeros[i] == "-"){
+                    numeros[i] = "";
+                }
+            }
+        }
+
+        else if(RegExp(/[0-9]/g).test(numeros[0])) 
+            numeros.splice(0, 0, "[NEGATIVO]|");
+        
+
+
+        var rebuild = "";
+        for(var i = 0; i < numeros.length; i++){
+          rebuild += numeros[i];
+        }
+
+        console.log(rebuild);
+
+        return rebuild;
+    }
+
+
+
+    limpiarOperacion(n){
+        var operation = n;
+        var count = 0;
+        var operador = operation.replace(/[0-9\.]+/g, "");
+        var numeros = operation.replace(/[\+\/\*\-]/g, "").split("");
+        var seCambio = false;
+
+
+        var isNegativo = n.split("|")[0] == "[NEGATIVO]";
+        if(isNegativo){
+            var sp = n.split("|");
+            var limpiado = "-" + sp[1];
+
+            seCambio = true;
+            numeros = limpiado.split("");
+        }
+
+
+        for (var i = 0; i < numeros.length; i++) {
+            if(numeros[i] == "."){
+                count++;
+            }
+
+            if(count > 1){
+                if(numeros[i] == "."){
+                  numeros[i] = "";
+                }
+            }
+        }
+
+
+        // Debido a que el numero queda en formato de Array se reconstruye a String normal
+        var rebuild = "";
+        for(var i = 0; i < numeros.length; i++){
+            rebuild += numeros[i];
+        }
+      
+        
+        console.log("NegNumber: " + rebuild)
+        if(seCambio){
+            
+            return rebuild;
+        }
+        else{
+            return rebuild + operador;
+        }
+
     }
 }
