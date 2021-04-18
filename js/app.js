@@ -241,4 +241,77 @@ class Calculadora{
         }
 
     }
+
+
+
+    /**
+     * Metodo que se encarga de realizar los calculos
+     * con la funcion eval() perteneciente a javascript
+     * la cual se encarga de evaluar el String que se le
+     * pasa como parametro lo transforma a una operacion
+     * de javascript
+     * Ej:
+     *  eval('setInterval(function() {...}, 1000 )')
+     */
+     calcular(op){
+        try{
+            var total = eval(op);
+
+            if(total.length > 8){
+                console.log("More SPACE");
+                this.agregados = total.slice(0, 8);
+                return total.slice(0, 8);
+            }
+            else{
+                console.log("Mora SPACE");
+                this.agregados = total;
+                return total;
+            }
+
+
+        }
+        catch (e){
+            this.agregados = "";
+            return "ERROR";
+        }
+    }
+
+
+
+    animation(el){
+        el.addEventListener("mousedown", () => {
+            el.style.padding = "5px";
+        });
+        el.addEventListener("mouseup", () => {
+            el.style.padding = "0px"
+        })
+    }
+
+    
+    /**
+     * Este metodo se encarga finalmente de llevar el resultado
+     * de la operacion realizada hacia el display de la calculadora
+     */
+    show(data){
+
+        console.log("Total operation: " + data);
+        this.toAdd = data;
+        this.agregados = "";
+        this.resultado = data;
+        this.display.innerHTML = data;
+        console.log(this.resultado);
+
+    }
+
+
+    /**
+     * Metodo empleado para limpiar todos los datos guardados 
+     */
+    clean(){
+        console.clear();
+        this.display.innerHTML = "0";
+        this.toDisplay = "";
+        this.agregados = "";
+        this.toAdd = "";
+    }
 }
