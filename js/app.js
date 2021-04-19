@@ -149,7 +149,6 @@ class Calculadora{
 
     agregarOperacion(){
         this.agregados += this.limpiarOperacion(this.toAdd);
-        console.log("Operacion " + this.agregados);
         this.toAdd = "";
         this.display.innerHTML = "";
         this.toDisplay = "";
@@ -162,8 +161,6 @@ class Calculadora{
         if(n == ""){
             return "";
         }
-
-        console.log("To Change: " + n);
 
         var operation = n;
         var numeros = operation.replace(/[\+\/\*]/g, "").split("");
@@ -185,8 +182,6 @@ class Calculadora{
         for(var i = 0; i < numeros.length; i++){
           rebuild += numeros[i];
         }
-
-        console.log(rebuild);
 
         return rebuild;
     }
@@ -230,8 +225,7 @@ class Calculadora{
             rebuild += numeros[i];
         }
       
-        
-        console.log("NegNumber: " + rebuild)
+
         if(seCambio){
             
             return rebuild;
@@ -256,17 +250,9 @@ class Calculadora{
      */
      calcular(op){
         try{
+
             var total = eval(op);
-
-            if(total.length > 8){
-                this.agregados = total.slice(0, 8);
-                return total.slice(0, 8);
-            }
-            else{
-                this.agregados = total;
-                return total;
-            }
-
+            return total;
 
         }
         catch (e){
@@ -292,13 +278,16 @@ class Calculadora{
      * de la operacion realizada hacia el display de la calculadora
      */
     show(data){
+        var stringData = data.toString();
 
-        console.log("Total operation: " + data);
-        this.toAdd = data;
+        if(stringData.length > 8){
+            stringData = stringData.slice(0, 8)
+        }
+
+        this.toAdd = stringData;
         this.agregados = "";
-        this.resultado = data;
-        this.display.innerHTML = data;
-        console.log(this.resultado);
+        this.resultado = stringData;
+        this.display.innerHTML = stringData;
 
     }
 
