@@ -67,8 +67,15 @@ class Calculadora{
                         break;
 
                     case "igual":
-                        this.agregarOperacion()
-                        this.show(this.calcular(this.agregados))
+                        if(this.isCalculated){
+                            var secuencia = this.secuencia(this.paraSecuencia);
+
+                            this.show(this.calcular(secuencia));
+                        }
+                        else{
+                            this.agregarOperacion()
+                            this.show(this.calcular(this.agregados))
+                        }
                         break;
 
                     case "on":
@@ -90,6 +97,10 @@ class Calculadora{
      * los numeros de cada tecla presionada
      */
     add(num){
+
+        this.isCalculated = false;
+        this.onlyOne = true;
+        
         var regExp = /[\+\-\/\*]/g;
 
         if(this.toDisplay.length > 8){
@@ -278,14 +289,20 @@ class Calculadora{
      * de la operacion realizada hacia el display de la calculadora
      */
     show(data){
+        this.isCalculated = true;
         var stringData = data.toString();
 
         if(stringData.length > 8){
             stringData = stringData.slice(0, 8)
         }
 
-        this.toAdd = stringData;
+        if(this.isCalculated && this.onlyOne){
+            this.onlyOne = false;
+            this.paraSecuencia = this.agregados;
+        }
+
         this.agregados = "";
+        this.toAdd = stringData;
         this.resultado = stringData;
         this.display.innerHTML = stringData;
 
@@ -301,5 +318,22 @@ class Calculadora{
         this.toDisplay = "";
         this.agregados = "";
         this.toAdd = "";
+    }
+
+
+
+    secuencia(operation){
+        var operador = operation.replace(/[0-9\.]+/g, "");
+        var splitOP = operation.split(/[\+\/\*\-]/g);
+
+        if(splitOP.length == 2){
+            splitOP[0] = this.resultado;
+            
+            var rebuild = "";
+            rebuild = splitOP[0] + operador + splitOP[1];
+            return rebuild;
+        }
+
+        return operation;
     }
 }
